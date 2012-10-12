@@ -1,4 +1,4 @@
-function frequencyEstimateOfLineSpectra()
+function [musicEstimates, minnormEstimates, ] = frequencyEstimateOfLineSpectra()
 
 end
 
@@ -38,13 +38,58 @@ end
 
 end
 
-function frequencyEstimatesMusic = getMusicFrequencyEstimates(realizations, signalOrder, totalOrder)
+%% get the average frequency estimates of the monte carlo realizations using Music
+
+function frequencyEstimatesMusic = getMusicFrequencyEstimates(realizations, modelOrder, totalOrder)
 
 frequencyEstimates = cell(length(realizations), 1);
 
 for k = 1:length(realizations)
-    frequencyEstimates{k} = music(realizations(k), signalOrder, totalOrder);
+    frequencyEstimates{k} = music(realizations(k), modelOrder, totalOrder);
 end
 
+frequencyEstimatesMusic = zeros(size(frequencyEstimates(1)));
 for k = 1:length(frequencyEstimates)
-    frequ
+    frequencyEstimatesMusic = frequencyEstimatesMusic + frequencyEstimates{k};
+end
+frequencyEstimatesMusic = frequencyEstimatesMusic ./ length(frequencyEstimates);
+
+end
+
+
+%% get the average frequency estimates of the monte carlo realizations using min-Norm
+
+function frequencyEstimatesMinNorm = getMinNormFrequencyEstimates(realizations, modelOrder, totalOrder)
+
+frequencyEstimates = cell(length(realizations), 1);
+
+for k = 1:length(realizations)
+    frequencyEstimates{k} = minnorm(realizations(k), modelOrder, totalOrder);
+end
+
+frequencyEstimatesMinNorm = zeros(size(frequencyEstimates(1)));
+for k = 1:length(frequencyEstimates)
+    frequencyEstimatesMinNorm = frequencyEstimatesMinNorm + frequencyEstimates{k};
+end
+frequencyEstimatesMinNorm = frequencyEstimatesMinNorm ./ length(frequencyEstimates);
+
+end
+
+
+%% get the average frequency estimates of the monte carlo realizations using ESPRIT
+
+function frequencyEstimatesESPRIT = getESPRITFrequencyEstimates(realizations, modelOrder, totalOrder)
+
+frequencyEstimates = cell(length(realizations), 1);
+
+for k = 1:length(realizations)
+    frequencyEstimates{k} = minnorm(realizations(k), modelOrder, totalOrder);
+end
+
+frequencyEstimatesESPRIT = zeros(size(frequencyEstimates(1)));
+for k = 1:length(frequencyEstimates)
+    frequencyEstimatesESPRIT = frequencyEstimatesESPRIT + frequencyEstimates{k};
+end
+frequencyEstimatesESPRIT = frequencyEstimatesESPRIT ./ length(frequencyEstimates);
+
+end

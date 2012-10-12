@@ -1,4 +1,11 @@
-function frequencyEstimateOfLineSpectra()
+function [musicEstimates, minnormEstimates, espritEstimates] = frequencyEstimateOfLineSpectra(modelOrder, totalOrder, variance)
+
+numberOfRealizations = 50;
+realizations = getMonteCarloRealizations(variance, numberOfRealizations);
+
+musicEstimates = getMusicFrequencyEstimates(realizations, modelOrder, totalOrder);
+minnormEstimates = getMinNormFrequencyEstimates(realizations, modelOrder, totalOrder);
+espritEstimates = getESPRITFrequencyEstimates(realizations, modelOrder, totalOrder);
 
 end
 
@@ -83,7 +90,7 @@ function frequencyEstimatesESPRIT = getESPRITFrequencyEstimates(realizations, mo
 frequencyEstimates = cell(length(realizations), 1);
 
 for k = 1:length(realizations)
-    frequencyEstimates{k} = minnorm(realizations(k), modelOrder, totalOrder);
+    frequencyEstimates{k} = esprit(realizations(k), modelOrder, totalOrder);
 end
 
 frequencyEstimatesESPRIT = zeros(size(frequencyEstimates(1)));
