@@ -52,7 +52,7 @@ function frequencyEstimatesMusic = getMusicFrequencyEstimates(realizations, mode
 frequencyEstimates = cell(length(realizations), 1);
 
 for k = 1:length(realizations)
-    frequencyEstimates{k} = music(realizations(k), modelOrder, totalOrder);
+    frequencyEstimates{k} = music(realizations{k}, modelOrder, totalOrder);
 end
 
 frequencyEstimatesMusic = zeros(size(frequencyEstimates(1)));
@@ -71,7 +71,7 @@ function frequencyEstimatesMinNorm = getMinNormFrequencyEstimates(realizations, 
 frequencyEstimates = cell(length(realizations), 1);
 
 for k = 1:length(realizations)
-    frequencyEstimates{k} = minnorm(realizations(k), modelOrder, totalOrder);
+    frequencyEstimates{k} = minnorm(realizations{k}, modelOrder, totalOrder);
 end
 
 frequencyEstimatesMinNorm = zeros(size(frequencyEstimates(1)));
@@ -90,7 +90,7 @@ function frequencyEstimatesESPRIT = getESPRITFrequencyEstimates(realizations, mo
 frequencyEstimates = cell(length(realizations), 1);
 
 for k = 1:length(realizations)
-    frequencyEstimates{k} = esprit(realizations(k), modelOrder, totalOrder);
+    frequencyEstimates{k} = esprit(realizations{k}, modelOrder, totalOrder);
 end
 
 frequencyEstimatesESPRIT = zeros(size(frequencyEstimates(1)));
