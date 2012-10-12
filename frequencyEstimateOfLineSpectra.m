@@ -1,4 +1,4 @@
-function [musicSpectrum, minnormSpectrum, espritSpectrum] = frequencyEstimateOfLineSpectra(modelOrder, totalOrder, variance)
+function [dataSpectrum, musicSpectrum, minnormSpectrum, espritSpectrum] = frequencyEstimateOfLineSpectra(modelOrder, totalOrder, variance)
 
 numberOfRealizations = 50;
 realizations = getMonteCarloRealizations(variance, numberOfRealizations);
@@ -9,6 +9,8 @@ minnormEstimates = getMinNormFrequencyEstimates(realizations, modelOrder, totalO
 minnormSpectrum = getSpectrum(minnormEstimates);
 espritEstimates = getESPRITFrequencyEstimates(realizations, modelOrder, totalOrder);
 espritSpectrum = getSpectrum(espritEstimates);
+
+dataSpectrum = getDataSpectrum(realizations);
 
 end
 
@@ -58,7 +60,7 @@ for k = 1:length(realizations)
     frequencyEstimates{k} = music(realizations{k}, modelOrder, totalOrder);
 end
 
-frequencyEstimatesMusic = zeros(size(frequencyEstimates(1)));
+frequencyEstimatesMusic = zeros(size(frequencyEstimates{1}));
 for k = 1:length(frequencyEstimates)
     frequencyEstimatesMusic = frequencyEstimatesMusic + frequencyEstimates{k};
 end
@@ -77,7 +79,7 @@ for k = 1:length(realizations)
     frequencyEstimates{k} = minnorm(realizations{k}, modelOrder, totalOrder);
 end
 
-frequencyEstimatesMinNorm = zeros(size(frequencyEstimates(1)));
+frequencyEstimatesMinNorm = zeros(size(frequencyEstimates{1}));
 for k = 1:length(frequencyEstimates)
     frequencyEstimatesMinNorm = frequencyEstimatesMinNorm + frequencyEstimates{k};
 end
@@ -96,7 +98,7 @@ for k = 1:length(realizations)
     frequencyEstimates{k} = esprit(realizations{k}, modelOrder, totalOrder);
 end
 
-frequencyEstimatesESPRIT = zeros(size(frequencyEstimates(1)));
+frequencyEstimatesESPRIT = zeros(size(frequencyEstimates{1}));
 for k = 1:length(frequencyEstimates)
     frequencyEstimatesESPRIT = frequencyEstimatesESPRIT + frequencyEstimates{k};
 end
@@ -122,3 +124,17 @@ M = 2 ^ nextpow2(4 * length(x));
 estimatedSpectrum = abs(fft(x, M));
 
 end
+
+function dataSpectrum = getDataSpectrum(realizations)
+
+avgRealization = zeros(size(realizations{1}));
+for k = 1:length(realizations)
+    avgRealization = avgRealization + realizations{k};
+end
+avgRealization = avgRealization ./ length(realizations);
+
+M = 2 ^ nextpow2(4 * 400); % to match the estimated spectra's length. here 400 is a magic number.
+dataSpectrum = abs(fft(avgRealization, M));
+
+end
+    
