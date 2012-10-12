@@ -1,11 +1,14 @@
-function [musicEstimates, minnormEstimates, espritEstimates] = frequencyEstimateOfLineSpectra(modelOrder, totalOrder, variance)
+function [musicSpectrum, minnormSpectrum, espritSpectrum] = frequencyEstimateOfLineSpectra(modelOrder, totalOrder, variance)
 
 numberOfRealizations = 50;
 realizations = getMonteCarloRealizations(variance, numberOfRealizations);
 
 musicEstimates = getMusicFrequencyEstimates(realizations, modelOrder, totalOrder);
+musicSpectrum = getSpectrum(musicEstimates);
 minnormEstimates = getMinNormFrequencyEstimates(realizations, modelOrder, totalOrder);
+minnormSpectrum = getSpectrum(minnormEstimates);
 espritEstimates = getESPRITFrequencyEstimates(realizations, modelOrder, totalOrder);
+espritSpectrum = getSpectrum(espritEstimates);
 
 end
 
@@ -98,5 +101,24 @@ for k = 1:length(frequencyEstimates)
     frequencyEstimatesESPRIT = frequencyEstimatesESPRIT + frequencyEstimates{k};
 end
 frequencyEstimatesESPRIT = frequencyEstimatesESPRIT ./ length(frequencyEstimates);
+
+end
+
+%% get the spectrum of given frequencies
+
+function estimatedSpectrum = getSpectrum(frequencyEstimates)
+
+N = 400; % just take a large enough value of samples
+t = 1:N;
+
+x = zeros(size(t));
+for k = 1:length(frequencyEstimates)
+    x = x + (exp(1i * frequencyEstimates(k) .* t));
+end
+
+% now get the spectrum using fft
+
+M = 2 ^ nextpow2(4 * length(x));
+estimatedSpectrum = abs(fft(x, M));
 
 end
