@@ -1,5 +1,7 @@
 function [dataSpectrum, musicSpectrum, minnormSpectrum, espritSpectrum] = frequencyEstimateOfLineSpectra(modelOrder, totalOrder, variance)
 
+% get all spectra of the freq estimates
+
 numberOfRealizations = 50;
 realizations = getMonteCarloRealizations(variance, numberOfRealizations);
 
@@ -121,9 +123,11 @@ end
 % now get the spectrum using fft
 
 M = 2 ^ nextpow2(4 * length(x));
-estimatedSpectrum = abs(fft(x, M));
+estimatedSpectrum = abs(fftshift(fft(x, M)));
 
 end
+
+%% get the spectrum of the generated input data
 
 function dataSpectrum = getDataSpectrum(realizations)
 
@@ -134,7 +138,7 @@ end
 avgRealization = avgRealization ./ length(realizations);
 
 M = 2 ^ nextpow2(4 * 400); % to match the estimated spectra's length. here 400 is a magic number.
-dataSpectrum = abs(fft(avgRealization, M));
+dataSpectrum = abs(fftshift(fft(avgRealization, M)));
 
 end
     

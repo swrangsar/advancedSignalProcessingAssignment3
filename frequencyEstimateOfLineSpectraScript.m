@@ -2,9 +2,9 @@ close all; clear all;
 
 addpath /Users/swrangsarbasumatary/Desktop/advancedSignalProcessingAssignment3/ch4/
 
-[dataSpectrum1, musicSpectrum1, minnormSpectrum1, espritSpectrum1] = frequencyEstimateOfLineSpectra(4, 12, 1);
+[dataSpectrum1, musicSpectrum1, minnormSpectrum1, espritSpectrum1] = frequencyEstimateOfLineSpectra(4, 12, 0);
 
-w = 0:(length(musicSpectrum1)-1);
+w = -(length(musicSpectrum1)/2):(length(musicSpectrum1)/2-1);
 w = 2 * pi * (w/length(musicSpectrum1));
 
 figure(100); clf;
