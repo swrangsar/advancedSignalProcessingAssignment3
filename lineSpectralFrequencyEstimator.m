@@ -39,7 +39,7 @@ end
 % now get the spectrum using fft
 
 M = 2 ^ nextpow2(4 * length(x));
-estimatedSpectrum = 10 *log10(abs(fftshift(fft(x, M))));
+estimatedSpectrum = 10 * log10(abs(fftshift(fft(x, M))));
 
 end
 
