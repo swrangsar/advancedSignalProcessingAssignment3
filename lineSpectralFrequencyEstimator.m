@@ -56,7 +56,7 @@ end
 
 function subplotDouble(dataSpectrum, musicSpectrum, minnormSpectrum, espritSpectrum)
 
-w = 0:length(dataSpectrum)-1;
+w = -(length(dataSpectrum)/2):(length(dataSpectrum)/2)-1;
 w = 2 * pi * w ./ length(dataSpectrum);
 
 figure;
