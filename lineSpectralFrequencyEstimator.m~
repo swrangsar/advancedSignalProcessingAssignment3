@@ -1,0 +1,32 @@
+function [dataSpectrum, musicSpectrum, minnormSpectrum, espritSpectrum] = lineSpectralFrequencyEstimator(data, modelOrder, totalOrder, variance)
+
+end
+
+%% get the frequency spectra using MUSIC, min-Norm and ESPRIT methods
+
+function [musicSpectrum, minnormSpectrum, espritSpectrum] = getFrequencySpectra(data, modelOrder, totalOrder)
+
+frequenciesMusic = music(data, modelOrder, totalOrder);
+frequenciesMinNorm = minnorm(data, modelOrder, totalOrder);
+
+
+end
+
+%% get the spectrum of given frequencies
+
+function estimatedSpectrum = getSpectrum(frequencyEstimates)
+
+N = 400; % just take a large enough value of samples
+t = 1:N;
+
+x = zeros(size(t));
+for k = 1:length(frequencyEstimates)
+    x = x + (exp(1i * frequencyEstimates(k) .* t));
+end
+
+% now get the spectrum using fft
+
+M = 2 ^ nextpow2(4 * length(x));
+estimatedSpectrum = abs(fftshift(fft(x, M)));
+
+end
