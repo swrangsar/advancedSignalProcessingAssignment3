@@ -1,11 +1,12 @@
-function [dataSpectrum, musicSpectrum, minnormSpectrum, espritSpectrum] ...
-    = lineSpectralFrequencyEstimator(data, modelOrder)
+function lineSpectralFrequencyEstimator(data, modelOrder)
 
 totalOrder = 3 * modelOrder;
-count = 400;
+count = 2 * length(data);
 [musicSpectrum, minnormSpectrum, espritSpectrum] = ...
     getFrequencySpectra(data, modelOrder, totalOrder, count);
 dataSpectrum = getDataSpectrum(data, count);
+subplotDouble(dataSpectrum, musicSpectrum, minnormSpectrum, espritSpectrum);
+
 
 end
 
@@ -38,7 +39,7 @@ end
 % now get the spectrum using fft
 
 M = 2 ^ nextpow2(4 * length(x));
-estimatedSpectrum = abs(fftshift(fft(x, M)));
+estimatedSpectrum = 10 *log10(abs(fftshift(fft(x, M))));
 
 end
 
@@ -47,7 +48,7 @@ end
 function dataSpectrum = getDataSpectrum(data, N)
 
 M = 2 ^ nextpow2(4 * N); 
-dataSpectrum = abs(fftshift(fft(data, M)));
+dataSpectrum = 10 * log10(abs(fftshift(fft(data, M))));
 
 end
 
@@ -55,29 +56,38 @@ end
 
 function subplotDouble(dataSpectrum, musicSpectrum, minnormSpectrum, espritSpectrum)
 
-figure(100); clf;
+w = 0:length(dataSpectrum)-1;
+w = 2 * pi * w ./ length(dataSpectrum);
+
+figure;
 subplot(3, 1, 1);
-plot(dataSpectrum);
+plot(w, dataSpectrum);
 hold on;
-p = plot(musicSpectrum);
+p = plot(w, musicSpectrum);
 hold off;
 axis tight;
+title('Music spectrum (green) over data spectrum');
+xlabel('Frequency (rad/s)');
 set(p, 'Color', 'green');
 
 subplot(3, 1, 2);
-plot(dataSpectrum);
+plot(w, dataSpectrum);
 hold on;
-p = plot(minnormSpectrum);
+p = plot(w, minnormSpectrum);
 hold off;
 axis tight;
+title('Min-norm spectrum (green) over data spectrum');
+xlabel('Frequency (rad/s)');
 set(p, 'Color', 'green');
 
 subplot(3, 1, 3);
-plot(dataSpectrum);
+plot(w, dataSpectrum);
 hold on;
-p = plot(espritSpectrum);
+p = plot(w, espritSpectrum);
 hold off;
 axis tight;
+title('ESPRIT spectrum (green) over data spectrum');
+xlabel('Frequency (rad/s)');
 set(p, 'Color', 'green');
 
 end

@@ -16,9 +16,10 @@ clear all;
 
 load lynxdata
 
-lineSpectralFrequencyEstimator(loglynx, 2);
-lineSpectralFrequencyEstimator(loglynx, 4);
-lineSpectralFrequencyEstimator(loglynx, 8);
+lineSpectralFrequencyEstimator
+
+
+
 
 rmpath /Users/swrangsarbasumatary/Desktop/advancedSignalProcessingAssignment3/data/
 rmpath /Users/swrangsarbasumatary/Desktop/advancedSignalProcessingAssignment3/ch4/
